@@ -15,12 +15,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          path: target
 
       - name: Checkout code-revivewer
         uses: actions/checkout@v4
         with:
           repository: zp2459-pari/code-revivewer
-          path: ../code-revivewer
+          path: code-revivewer
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -29,7 +30,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd ../code-revivewer
+          cd code-revivewer
           pip install -r requirements.txt
 
       - name: Run AI Code Review
@@ -38,15 +39,15 @@ jobs:
           LLM_API_KEY: ${{ secrets.KIMI_API_KEY }}
           LLM_BASE_URL: ${{ secrets.KIMI_BASE_URL || 'https://api.moonshot.cn/v1' }}
           LLM_MODEL: ${{ secrets.KIMI_MODEL || 'kimi-k2-5' }}
-          PROJECT_ROOT: ${{ github.workspace }}
+          PROJECT_ROOT: ${{ github.workspace }}/target
           GIT_MODE: pr
           TARGET_BRANCH: origin/${{ github.base_ref }}
           ENABLE_LINTER: false
           ENABLE_KG: false
           OUTPUT_FORMAT: json
-          OUTPUT_REPORT_PATH: ${{ github.workspace }}/review_report.json
+          OUTPUT_REPORT_PATH: ${{ github.workspace }}/target/review_report.json
         run: |
-          cd ../code-revivewer
+          cd code-revivewer
           python main.py || true
 
       - name: Post or Update Review Comment
@@ -55,7 +56,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const path = '${{ github.workspace }}/review_report.json';
+            const path = '${{ github.workspace }}/target/review_report.json';
 
             if (!fs.existsSync(path)) {
               console.log('No review report found.');
