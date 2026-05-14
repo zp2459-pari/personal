@@ -37,7 +37,7 @@ jobs:
         env:
           LLM_PROVIDER: kimi
           LLM_API_KEY: ${{ secrets.KIMI_API_KEY }}
-          LLM_BASE_URL: ${{ secrets.KIMI_BASE_URL || 'https://api.moonshot.cn/v1' }}
+          LLM_BASE_URL: ${{ secrets.KIMI_BASE_URL || 'https://api.kimi.com/coding/v1' }}
           LLM_MODEL: ${{ secrets.KIMI_MODEL || 'kimi-k2-5' }}
           PROJECT_ROOT: ${{ github.workspace }}/target
           GIT_MODE: pr
