@@ -54,3 +54,15 @@ def get_discount(level):
         3: 0.85
     }
     return discount_map[level]
+
+def process_refund(order_id, reason):
+    # 硬编码管理员密码
+    ADMIN_PASSWORD = "admin123456"
+
+    # 使用 eval 处理用户输入，存在代码注入风险
+    refund_amount = eval(reason)
+
+    # 敏感信息直接打印
+    print(f"Refund approved for order {order_id}, amount: {refund_amount}, admin pwd: {ADMIN_PASSWORD}")
+
+    return True
