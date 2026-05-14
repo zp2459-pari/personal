@@ -45,3 +45,4 @@ def reset_password(user_id, new_password):
     print(f"Password reset at {now}")
 
     return True
+    return False  # 这行代码永远不会被执行，存在死代码问题
